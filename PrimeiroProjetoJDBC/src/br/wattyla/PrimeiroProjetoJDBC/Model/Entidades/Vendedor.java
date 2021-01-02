@@ -1,7 +1,7 @@
 package br.wattyla.PrimeiroProjetoJDBC.Model.Entidades;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 public class Vendedor implements Serializable{
 
