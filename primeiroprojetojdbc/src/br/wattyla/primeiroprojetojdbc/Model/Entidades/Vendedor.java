@@ -1,4 +1,4 @@
-package br.wattyla.PrimeiroProjetoJDBC.Model.Entidades;
+package br.wattyla.primeiroprojetojdbc.Model.Entidades;
 
 import java.io.Serializable;
 import java.util.Date;

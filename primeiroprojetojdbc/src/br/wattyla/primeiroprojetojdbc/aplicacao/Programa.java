@@ -1,10 +1,10 @@
-package br.wattyla.PrimeiroProjetoJDBC.aplicacao;
+package br.wattyla.primeiroprojetojdbc.aplicacao;
 
 import java.util.Calendar;
 import java.util.Date;
 
-import br.wattyla.PrimeiroProjetoJDBC.Model.Entidades.Departamento;
-import br.wattyla.PrimeiroProjetoJDBC.Model.Entidades.Vendedor;
+import br.wattyla.primeiroprojetojdbc.Model.Entidades.Departamento;
+import br.wattyla.primeiroprojetojdbc.Model.Entidades.Vendedor;
 
 public class Programa {
 

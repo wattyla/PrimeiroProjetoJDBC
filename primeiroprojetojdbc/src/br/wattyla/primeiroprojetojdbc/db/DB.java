@@ -1,4 +1,4 @@
-package br.wattyla.PrimeiroProjetoJDBC.db;
+package br.wattyla.primeiroprojetojdbc.db;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package br.wattyla.PrimeiroProjetoJDBC.db;
+package br.wattyla.primeiroprojetojdbc.db;
 
 public class DbException extends RuntimeException {
 
