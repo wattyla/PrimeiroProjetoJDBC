@@ -1,4 +1,4 @@
-package br.wattyla.jdbc1.db;
+package br.wattyla.PrimeiroProjetoJDBC.db;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
