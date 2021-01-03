@@ -29,7 +29,7 @@ public class VendedorDaoJDBC implements VendedorDao {
 		PreparedStatement preparedStatement = null;
 		try {
 			preparedStatement = conn.prepareStatement(""
-					+ "INSERT INTO vendedor "
+					+ "INSERT INTO coursejdbc.vendedor "
 					+ "(Name, Email, DataNascimento, SalarioBase, DepartamentoId) "
 					+ "VALUES "
 					+ "(?,?,?,?,?);",
@@ -61,9 +61,28 @@ public class VendedorDaoJDBC implements VendedorDao {
 	}
 
 	@Override
-	public void update(Vendedor obj) {
-		// TODO Auto-generated method stub
-		
+	public void update(Vendedor vendedor) {
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = conn.prepareStatement(""
+					+ "UPDATE coursejdbc.vendedor "
+					+ "SET Name=?, Email=?, DataNascimento=?, SalarioBase=?, DepartamentoId=? "
+					+ "WHERE Id = ?;");
+
+			preparedStatement.setString(1, vendedor.getName());
+			preparedStatement.setString(2, vendedor.getEmail());
+			preparedStatement.setDate(3, new java.sql.Date(vendedor.getDataNascimento().getTime()));
+			preparedStatement.setDouble(4, vendedor.getSalarioBase());
+			preparedStatement.setInt(5, vendedor.getDepartamento().getId());
+			preparedStatement.setInt(6, vendedor.getId());
+			
+			preparedStatement.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}finally {
+			DB.fecharStatement(preparedStatement);
+		}			
 	}
 
 	@Override
