@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +25,39 @@ public class VendedorDaoJDBC implements VendedorDao {
 	}
 	
 	@Override
-	public void insert(Vendedor obj) {
-		// TODO Auto-generated method stub
-		
+	public void insert(Vendedor vendedor) {
+		PreparedStatement preparedStatement = null;
+		try {
+			preparedStatement = conn.prepareStatement(""
+					+ "INSERT INTO vendedor "
+					+ "(Name, Email, DataNascimento, SalarioBase, DepartamentoId) "
+					+ "VALUES "
+					+ "(?,?,?,?,?);",
+					Statement.RETURN_GENERATED_KEYS);
+
+			preparedStatement.setString(1, vendedor.getName());
+			preparedStatement.setString(2, vendedor.getEmail());
+			preparedStatement.setDate(3, new java.sql.Date(vendedor.getDataNascimento().getTime()));
+			preparedStatement.setDouble(4, vendedor.getSalarioBase());
+			preparedStatement.setInt(5, vendedor.getDepartamento().getId());
+			
+			int linhasInseridas = preparedStatement.executeUpdate();
+			
+			if (linhasInseridas > 0) {
+				ResultSet resultSet = preparedStatement.getGeneratedKeys();
+				if (resultSet.next()) {
+					int id = resultSet.getInt(1);
+					vendedor.setId(id);
+				}
+				DB.fecharResultSet(resultSet);
+			}else {
+				throw new DbException("Erro inesperado! Nenhuma linha afetada");
+			}
+		} catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}finally {
+			DB.fecharStatement(preparedStatement);
+		}	
 	}
 
 	@Override
@@ -69,12 +100,39 @@ public class VendedorDaoJDBC implements VendedorDao {
 		}
 	}
 
-
-
 	@Override
 	public List<Vendedor> cunsultaTodos() {
-		// TODO Auto-generated method stub
-		return null;
+		Statement statement = null;
+		ResultSet resultado = null;
+		try {
+			statement = conn.createStatement();
+			
+			resultado = statement.executeQuery(""
+					+ "SELECT t1.*, t2.Name as DepName "
+					+ "FROM coursejdbc.vendedor as t1,"
+					+ "coursejdbc.departamento as t2 "
+					+ "where t1.DepartamentoId = t2.Id;");
+			
+			List<Vendedor> listaVendedores = new ArrayList<>();
+			Map<Integer,Departamento> map = new HashMap<>();
+			
+			while (resultado.next()) {
+				Departamento departamento = map.get(resultado.getInt("DepartamentoId"));
+				
+				if  (departamento == null) {
+					departamento = instanciaDepartamento(resultado);
+					map.put(resultado.getInt("DepartamentoId"), departamento);
+				}
+				
+				listaVendedores.add(instanciaVendedor(resultado,departamento));
+			}
+			return listaVendedores;
+		} catch (Exception e) {
+			throw new DbException(e.getMessage());
+		}finally {
+			DB.fecharResultSet(resultado);
+			DB.fecharStatement(statement);
+		}
 	}
 
 	@Override
