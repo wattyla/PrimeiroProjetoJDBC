@@ -5,6 +5,8 @@ import java.util.Date;
 
 import br.wattyla.primeiroprojetojdbc.Model.Entidades.Departamento;
 import br.wattyla.primeiroprojetojdbc.Model.Entidades.Vendedor;
+import br.wattyla.primeiroprojetojdbc.Model.dao.DaoFabrica;
+import br.wattyla.primeiroprojetojdbc.Model.dao.VendedorDao;
 
 public class Programa {
 
@@ -13,17 +15,10 @@ public class Programa {
 		//new RecuperacaoDados().recuperaDadosBanco();
 		//Aula de insercão de dados no Banco (insert).
 		//new InsercaoDados().insercaoDados();
-		Departamento obj = new Departamento(1, "Livraria");
-		System.out.println(obj);
+		VendedorDao vendedorDao = DaoFabrica.criaVendedorDao();
 		
-		//Data de nacimento
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.YEAR, 1989);
-		cal.set(Calendar.MONTH, Calendar.OCTOBER);
-		cal.set(Calendar.DAY_OF_MONTH, 13);
-		Date dataNacimento = cal.getTime();
+		Vendedor vendedor = vendedorDao.consultaPeloId(3);
 		
-		Vendedor vendedor = new Vendedor(1,"wattyla","wattylaa@hotmail.com", dataNacimento,3500.0,obj);
 		System.out.println(vendedor);
 	}
 
